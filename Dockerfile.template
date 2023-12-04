@@ -1,0 +1,20 @@
+ARG PYTHON_TARGET_VERSION="latest"
+FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine-python:${PYTHON_TARGET_VERSION}-run
+
+ENV MQTT_BROKER_HOST=192.168.0.1
+ENV MQTT_BROKER_PORT=1886
+ENV MQTT_USERNAME=mqtt
+ENV MQTT_PASSWORD=password
+ENV BALENA_DEVICE_UUID=12320
+ENV IR_CONFIG="my-fujitsu-heater.toml"
+ENV SEND_REPEAT=10
+ENV IR_ON_KEY=KEY_HEAT-AUTO-29C
+ENV IR_OFF_KEY=KEY_TURN-OFF
+
+RUN apk add --no-cache v4l-utils
+
+WORKDIR /usr/src/app
+COPY ./app/* .
+RUN pip install -r requirements.txt
+
+CMD ["python", "app.py"]
