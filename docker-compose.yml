@@ -1,0 +1,15 @@
+version: '2'
+volumes:
+    balena-data:
+services:
+  ir-server:
+    build: ./ir-server
+    volumes:
+      - 'balena-data:/data'
+    restart: always
+    privileged: true
+    devices:
+      - '/dev/lirc0:/dev/lirc0'
+      - '/dev/lirc1:/dev/lirc1'
+    ports:
+      - "80:80"
